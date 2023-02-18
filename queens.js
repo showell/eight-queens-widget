@@ -18,6 +18,12 @@ function coords_string(loc) {
     return "(" + x_coord(loc) + "," + y_coord(loc) + ")";
 }
 
+function is_dark_square(loc) {
+    const x = x_coord(loc);
+    const y = y_coord(loc);
+    return x % 2 == y % 2;
+}
+
 function for_all_squares(f) {
     for (var i = 0; i < N*N; ++i) {
         f(i);
@@ -148,7 +154,7 @@ function draw_queen_square(td) {
 
 function draw_normal_square(td, loc, attacked_squares) {
     const num_attacks = attacked_squares[loc];
-    const color = num_attacks ? "red" : "white";
+    const color = num_attacks ? "red" : is_dark_square(loc) ? "lightgray" : "white";
     const opacity = num_attacks ? 0.75 : 1;
     td.style["background-color"] = color;
     td.style["opacity"] = opacity;
@@ -158,14 +164,12 @@ function draw_normal_square(td, loc, attacked_squares) {
 
 function make_cell(loc) {
     const td = document.createElement('td');
-    td.innerText = coords_string(loc);
     td.id = loc;
     td.style.height = "50px";
     td.style.width = "50px";
     td.style.border = "1px solid blue";
     td.style["text-align"] = "center";
-    td.style["background-color"] = "white";
-    td.style["font-size"] = "80%";
+    draw_normal_square(td, loc, {});
     return td;
 }
 
