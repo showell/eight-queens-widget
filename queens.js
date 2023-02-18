@@ -25,7 +25,7 @@ function is_dark_square(loc) {
 }
 
 function for_all_squares(f) {
-    for (var i = 0; i < N*N; ++i) {
+    for (var i = 0; i < N * N; ++i) {
         f(i);
     }
 }
@@ -113,11 +113,16 @@ function get_status_message_after_queen_move(attacked_squares) {
     } else if (num_free_squares == 0) {
         temp_flash("OH NO!");
         status = "YOU LOSE! ";
-    } 
+    }
 
-    return status +
-        "free squares: " + num_free_squares + ", " +
-        "unplaced queens: " + num_queens_left;
+    return (
+        status +
+        "free squares: " +
+        num_free_squares +
+        ", " +
+        "unplaced queens: " +
+        num_queens_left
+    );
 }
 
 function write_status(text) {
@@ -154,7 +159,11 @@ function draw_queen_square(td) {
 
 function draw_normal_square(td, loc, attacked_squares) {
     const num_attacks = attacked_squares[loc];
-    const color = num_attacks ? "red" : is_dark_square(loc) ? "lightgray" : "white";
+    const color = num_attacks
+        ? "red"
+        : is_dark_square(loc)
+        ? "lightgray"
+        : "white";
     const opacity = num_attacks ? 0.75 : 1;
     td.style["background-color"] = color;
     td.style["opacity"] = opacity;
@@ -163,7 +172,7 @@ function draw_normal_square(td, loc, attacked_squares) {
 }
 
 function make_cell(loc) {
-    const td = document.createElement('td');
+    const td = document.createElement("td");
     td.id = loc;
     td.style.height = "50px";
     td.style.width = "50px";
@@ -216,7 +225,7 @@ function make_board() {
     const table = document.getElementById("chessboard");
     table.children = [];
     for (var y = N - 1; y >= 0; --y) {
-        const tr = document.createElement('tr');
+        const tr = document.createElement("tr");
         for (var x = 0; x < N; ++x) {
             const loc = integer_loc(x, y);
             var td = make_cell(loc);
