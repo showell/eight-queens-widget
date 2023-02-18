@@ -43,32 +43,31 @@ function get_attacked_squares() {
     const down_diags = {};
     const attacks = {};
 
-    for_all_squares((loc) => {
-        const x = x_coord(loc);
-        const y = y_coord(loc);
-        attacks[loc] = 0; // for now
-        rows[y] = 0;
-        cols[x] = 0;
-        up_diags[x - y] = 0;
-        down_diags[x + y] = 0;
-    });
+    function get(dct, i) {
+        return dct[i] || 0;
+    }
+
+    function incr(dct, i) {
+        dct[i] = get(dct, i) + 1;
+    }
 
     for (const loc in queen_locs) {
         const x = x_coord(loc);
         const y = y_coord(loc);
-        rows[y] += 1;
-        cols[x] += 1;
-        up_diags[x - y] += 1;
-        down_diags[x + y] += 1;
+        incr(rows, y);
+        incr(cols, x);
+        incr(up_diags, x - y);
+        incr(down_diags, x + y);
     }
 
     for_all_squares((loc) => {
         const x = x_coord(loc);
         const y = y_coord(loc);
-        attacks[loc] += rows[y];
-        attacks[loc] += cols[x];
-        attacks[loc] += up_diags[x - y];
-        attacks[loc] += down_diags[x + y];
+        attacks[loc] =
+            get(rows, y) +
+            get(cols, x) +
+            get(up_diags, x - y) +
+            get(down_diags, x + y);
     });
 
     return attacks;
